@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://working-bibliography-extension/contracts/wb-librarian-contract-v1",
+  "contract_id": "wb-librarian-contract-v1",
+  "contract_type": "connector_custody",
+  "version": "1.0.0",
+  "stability": "MAJOR",
+  "title": "Working Bibliography — Librarian Extension Contract",
+  "description": "Formal contract governing the relationship between the Working Bibliography Extension and the Librarian Core. Defines identity, capabilities, ownership boundaries, allowed and forbidden operations, lifecycle governance, and verification points.",
+  "ratified": "2026-07-21",
+  "ratified_by": "Owner authorization — WB-EXTENSION-CONTRACT-1",
+  "parties": [
+    {
+      "role": "extension",
+      "id": "working-bibliography-extension",
+      "domain": "knowledge_custody",
+      "contract_version": "1.0.0"
+    },
+    {
+      "role": "core",
+      "id": "librarian",
+      "domain": "governance_kernel",
+      "contract_version": "1.0.0"
+    }
+  ],
+  "identity": {
+    "extension_id": "working-bibliography-extension",
+    "display_name": "Working Bibliography Extension",
+    "version": "0.1.0",
+    "owner_domain": "knowledge_custody",
+    "contract_version": "1.0.0",
+    "manifest_required_fields": [
+      "extension_id",
+      "version",
+      "capabilities",
+      "contract_version",
+      "declared_at"
+    ]
+  },
+  "capabilities": {
+    "classification": "knowledge_custody_provider",
+    "declarations": [
+      {
+        "capability_id": "artifact.read",
+        "allowed_operations": ["wb_get_artifact", "wb_list_artifacts"],
+        "risk_classification": "R0",
+        "required_permissions": ["read:artifacts"],
+        "description": "Read artifact metadata and content by ID"
+      },
+      {
+        "capability_id": "artifact.register",
+        "allowed_operations": ["wb_register_artifact"],
+        "risk_classification": "R1",
+        "required_permissions": ["write:artifacts"],
+        "description": "Create a new governed artifact from captured source"
+      },
+      {
+        "capability_id": "knowledge.search",
+        "allowed_operations": ["wb_search_context"],
+        "risk_classification": "R0",
+        "required_permissions": ["read:index"],
+        "description": "Search governed knowledge artifacts with provenance-aware results"
+      },
+      {
+        "capability_id": "knowledge.retrieve",
+        "allowed_operations": ["wb_retrieve_source"],
+        "risk_classification": "R0",
+        "required_permissions": ["read:artifacts"],
+        "description": "Retrieve original source representation for an artifact"
+      },
+      {
+        "capability_id": "provenance.read",
+        "allowed_operations": ["wb_get_receipt", "wb_get_history"],
+        "risk_classification": "R0",
+        "required_permissions": ["read:receipts"],
+        "description": "Read receipts and history for governed operations"
+      }
+    ]
+  },
+  "ownership": {
+    "extension_owns": {
+      "domains": [
+        "knowledge_artifact_identity",
+        "knowledge_artifact_provenance",
+        "knowledge_artifact_content",
+        "knowledge_artifact_lifecycle",
+        "knowledge_retrieval_index",
+        "embedding_vectors"
+      ],
+      "description": "Working Bibliography owns all canonical knowledge artifacts, their provenance, lifecycle, and derived indexes within its storage domain."
+    },
+    "core_owns": {
+      "domains": [
+        "governance_authority",
+        "owner_decisions",
+        "project_lifecycle",
+        "sprint_ledger",
+        "core_custody_records"
+      ],
+      "description": "Librarian core owns all governance authority, decision records, lifecycle state, and custody records."
+    },
+    "shared_infrastructure": {
+      "domains": [
+        "embedding_model_capability"
+      ],
+      "description": "Embedding model inference can be a shared Capability Provider. Vectors derived from it are extension-owned."
+    }
+  },
+  "allowed_operations": {
+    "extension_to_core": [],
+    "core_to_extension": [
+      "wb_get_artifact",
+      "wb_list_artifacts",
+      "wb_register_artifact",
+      "wb_search_context",
+      "wb_retrieve_source",
+      "wb_get_receipt",
+      "wb_get_history"
+    ],
+    "self_governed": [
+      "artifact_lifecycle_transition",
+      "index_regeneration",
+      "embedding_generation",
+      "capture_receipt_creation",
+      "retrieval_receipt_creation"
+    ]
+  },
+  "forbidden_operations": {
+    "absolute": [
+      {
+        "operation": "modify_librarian_authority_state",
+        "rationale": "Extension must not write governance state",
+        "violation_outcome": "REVOKE"
+      },
+      {
+        "operation": "create_owner_decisions",
+        "rationale": "Extension must not originate authority actions",
+        "violation_outcome": "REVOKE"
+      },
+      {
+        "operation": "mutate_sprint_ledger",
+        "rationale": "Sprint ledger is core-controlled record",
+        "violation_outcome": "REVOKE"
+      },
+      {
+        "operation": "accept_mutation_allowance",
+        "rationale": "Extension operates in addon-owned space, not core custody",
+        "violation_outcome": "REVOKE"
+      },
+      {
+        "operation": "seal_production_receipts",
+        "rationale": "Sealing is authority act, not evidence act",
+        "violation_outcome": "REVOKE"
+      },
+      {
+        "operation": "delete_artifact_content",
+        "rationale": "Content must persist for audit — lifecycle governs access, not deletion",
+        "violation_outcome": "SUSPENDED"
+      },
+      {
+        "operation": "modify_artifact_provenance",
+        "rationale": "Provenance is immutable after capture",
+        "violation_outcome": "SUSPENDED"
+      }
+    ]
+  },
+  "lifecycle": {
+    "state_machine": [
+      {
+        "state": "REGISTERED",
+        "meaning": "Extension discovered, identity known",
+        "capabilities_active": false,
+        "owner_action_required": false
+      },
+      {
+        "state": "CONTRACT_VERIFIED",
+        "meaning": "Declared capabilities validated against available tools",
+        "capabilities_active": false,
+        "owner_action_required": false
+      },
+      {
+        "state": "OWNER_APPROVED",
+        "meaning": "Owner explicitly authorized activation",
+        "capabilities_active": false,
+        "owner_action_required": true
+      },
+      {
+        "state": "ACTIVE",
+        "meaning": "Full capability access",
+        "capabilities_active": true,
+        "owner_action_required": false
+      },
+      {
+        "state": "SUSPENDED",
+        "meaning": "Drift detected, investigation underway",
+        "capabilities_active": false,
+        "owner_action_required": true
+      },
+      {
+        "state": "REVOKED",
+        "meaning": "Contract violation, permanent termination",
+        "capabilities_active": false,
+        "owner_action_required": false
+      }
+    ],
+    "transitions": [
+      { "from": "REGISTERED", "to": "CONTRACT_VERIFIED", "trigger": "contract_validation_pass", "authority": "automated" },
+      { "from": "CONTRACT_VERIFIED", "to": "OWNER_APPROVED", "trigger": "owner_authorization", "authority": "owner" },
+      { "from": "OWNER_APPROVED", "to": "ACTIVE", "trigger": "activation_signal", "authority": "automated" },
+      { "from": "ACTIVE", "to": "SUSPENDED", "trigger": "drift_detected", "authority": "automated_notify_owner" },
+      { "from": "ACTIVE", "to": "REVOKED", "trigger": "contract_violation", "authority": "owner" },
+      { "from": "SUSPENDED", "to": "ACTIVE", "trigger": "owner_clears_drift", "authority": "owner" },
+      { "from": "SUSPENDED", "to": "REVOKED", "trigger": "owner_terminates", "authority": "owner" }
+    ],
+    "terminal_states": ["REVOKED"]
+  },
+  "evidence": {
+    "receipt_types": [
+      {
+        "type": "capture_receipt",
+        "required_fields": ["artifact_id", "content_hash", "source", "captured_at"],
+        "description": "Generated when a new artifact is captured and stored"
+      },
+      {
+        "type": "retrieval_receipt",
+        "required_fields": ["query", "results", "artifact_references", "retrieved_at"],
+        "description": "Generated when a knowledge retrieval operation returns results"
+      },
+      {
+        "type": "lifecycle_receipt",
+        "required_fields": ["artifact_id", "from_state", "to_state", "transitioned_at", "reason"],
+        "description": "Generated when an artifact lifecycle state changes"
+      },
+      {
+        "type": "drift_receipt",
+        "required_fields": ["expected_behavior", "observed_behavior", "classification", "detected_at"],
+        "description": "Generated when drift is detected between declared and observed behavior"
+      },
+      {
+        "type": "embedding_receipt",
+        "required_fields": ["artifact_id", "embedding_model", "model_revision", "generated_at", "source_hash"],
+        "description": "Generated when an embedding is created from a canonical artifact"
+      }
+    ],
+    "receipt_storage": "extension_local",
+    "receipt_governance": "evidence_only_no_authority"
+  },
+  "enforcement": {
+    "drift_monitoring": "active",
+    "review_frequency": "per_operation",
+    "escalation_path": "drift_detected_SUSPENDED_owner_review",
+    "violation_outcomes": {
+      "drift": "SUSPENDED",
+      "contract_breach": "REVOKED",
+      "forbidden_operation_attempt": "REVOKED"
+    },
+    "verification_points": [
+      "on_handshake",
+      "on_capability_invocation",
+      "on_lifecycle_transition",
+      "periodic_health_check"
+    ]
+  },
+  "drift_classification": {
+    "PASS": {
+      "meaning": "Expected behavior matches observed behavior",
+      "action": "None"
+    },
+    "OBSERVATION": {
+      "meaning": "Minor deviation detected, not yet a violation",
+      "action": "Logged, Owner notified"
+    },
+    "REVOKE": {
+      "meaning": "Contract violation confirmed",
+      "action": "SUSPENDED or REVOKED"
+    }
+  },
+  "non_goals": [
+    "Extension originates Librarian Owner decisions",
+    "Extension writes governed sprint state",
+    "Extension mutates Librarian custody records outside own domain",
+    "Extension modifies Librarian core MCP tool surface",
+    "Extension operates without an active, verified contract"
+  ]
+}
