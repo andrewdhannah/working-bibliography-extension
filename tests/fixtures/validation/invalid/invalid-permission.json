@@ -1,0 +1,17 @@
+{
+  "description": "Invalid permission — bad scope name and invalid risk",
+  "category": "invalid",
+  "expected": { "pass": false },
+  "data": {
+    "permissions": {
+      "allowed_operations": {
+        "bad_scope_name": {
+          "tools": [],
+          "risk": "R3"
+        }
+      },
+      "forbidden_operations": [],
+      "enforcement": {}
+    }
+  }
+}

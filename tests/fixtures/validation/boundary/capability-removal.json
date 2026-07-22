@@ -1,0 +1,36 @@
+{
+  "description": "Boundary — capability with no tools + valid other domains",
+  "category": "boundary",
+  "expected": { "pass": false },
+  "data": {
+    "identity": {
+      "extension_id": "test-extension",
+      "contract_id": "test-contract-v1",
+      "contract_version": "1.0.0",
+      "version": "0.1.0",
+      "owner_domain": "testing",
+      "declared_at": "2026-07-21T18:00:00Z"
+    },
+    "contract": {
+      "contract_id": "test-contract-v1",
+      "contract_type": "connector_custody",
+      "version": "1.0.0",
+      "parties": [{"role":"extension","id":"test-extension"},{"role":"core","id":"librarian"}],
+      "capabilities": {"declarations":[{"capability_id":"test.read","allowed_operations":["test_get"]}]},
+      "ownership": {"extension_owns":{"domains":["test_items"]},"core_owns":{"domains":["authority"]}},
+      "forbidden_operations":{"absolute":[{"operation":"bad","violation_outcome":"REVOKE"}]},
+      "lifecycle":{"state_machine":[{"state":"REGISTERED"},{"state":"ACTIVE"},{"state":"REVOKED"}]},
+      "evidence":{"receipt_types":[{"type":"test_receipt"}]}
+    },
+    "capabilities": [
+      {"id":"test.read","tools":["test_get"],"risk":"R0","status":"active","permissions":["read:items"]},
+      {"id":"test.empty","tools":[],"risk":"R0","status":"pending","permissions":["read:items"]}
+    ],
+    "lifecycle": {"state_machine":[{"state":"REGISTERED"},{"state":"ACTIVE"},{"state":"REVOKED"}]},
+    "permissions": {
+      "allowed_operations": {"read:items":{"tools":["test_get"],"risk":"R0"}},
+      "forbidden_operations": ["bad"],
+      "enforcement": {"drift_monitoring":"active","violation_outcomes":{}}
+    }
+  }
+}

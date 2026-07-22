@@ -1,0 +1,12 @@
+{
+  "description": "Invalid identity — missing extension_id and bad version format",
+  "category": "invalid",
+  "expected": { "pass": false },
+  "data": {
+    "identity": {
+      "version": "1",
+      "contract_id": "no-version-format",
+      "owner_domain": "test"
+    }
+  }
+}

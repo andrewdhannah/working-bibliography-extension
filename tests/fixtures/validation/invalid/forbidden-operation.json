@@ -1,0 +1,17 @@
+{
+  "description": "Invalid permissions — no forbidden operations and missing enforcement",
+  "category": "invalid",
+  "expected": { "pass": false },
+  "data": {
+    "permissions": {
+      "allowed_operations": {
+        "read:items": {
+          "tools": ["wb_get_item"],
+          "risk": "R0"
+        }
+      },
+      "forbidden_operations": [],
+      "enforcement": {}
+    }
+  }
+}

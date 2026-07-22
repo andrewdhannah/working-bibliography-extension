@@ -1,0 +1,18 @@
+{
+  "description": "Invalid contract — missing parties, ownership, and evidence",
+  "category": "invalid",
+  "expected": { "pass": false },
+  "data": {
+    "contract": {
+      "contract_id": "invalid-contract",
+      "contract_type": "unknown",
+      "version": "1.0.0",
+      "parties": [],
+      "capabilities": {},
+      "ownership": {},
+      "forbidden_operations": {},
+      "lifecycle": {},
+      "evidence": {}
+    }
+  }
+}

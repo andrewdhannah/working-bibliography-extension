@@ -1,0 +1,23 @@
+{
+  "description": "Invalid capability — no tools defined for a capability",
+  "category": "invalid",
+  "expected": { "pass": false },
+  "data": {
+    "capabilities": [
+      {
+        "id": "artifact.read",
+        "tools": [],
+        "risk": "R0",
+        "status": "active",
+        "permissions": ["read:artifacts"]
+      },
+      {
+        "id": "artifact.register",
+        "tools": ["wb_register_artifact"],
+        "risk": "INVALID",
+        "status": "active",
+        "permissions": ["write:artifacts"]
+      }
+    ]
+  }
+}

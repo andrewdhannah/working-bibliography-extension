@@ -1,0 +1,61 @@
+{
+  "description": "Valid extension contract with all required sections",
+  "category": "valid",
+  "expected": { "pass": true },
+  "data": {
+    "identity": {
+      "extension_id": "contract-test",
+      "contract_id": "test-contract-v1",
+      "contract_version": "1.0.0",
+      "version": "1.0.0",
+      "owner_domain": "testing",
+      "declared_at": "2026-07-21T18:00:00Z"
+    },
+    "contract": {
+      "contract_id": "test-contract-v1",
+      "contract_type": "connector_custody",
+      "version": "1.0.0",
+      "parties": [
+        { "role": "extension", "id": "contract-test" },
+        { "role": "core", "id": "librarian" }
+      ],
+      "capabilities": {
+        "declarations": [
+          { "capability_id": "artifact.read", "allowed_operations": ["wb_get_artifact"] }
+        ]
+      },
+      "ownership": {
+        "extension_owns": { "domains": ["artifacts"] },
+        "core_owns": { "domains": ["authority"] }
+      },
+      "forbidden_operations": {
+        "absolute": [
+          { "operation": "modify_librarian_authority_state", "violation_outcome": "REVOKE" }
+        ]
+      },
+      "lifecycle": {
+        "state_machine": [
+          { "state": "REGISTERED", "capabilities_active": false },
+          { "state": "CONTRACT_VERIFIED", "capabilities_active": false },
+          { "state": "OWNER_APPROVED", "capabilities_active": false },
+          { "state": "ACTIVE", "capabilities_active": true },
+          { "state": "SUSPENDED", "capabilities_active": false },
+          { "state": "REVOKED", "capabilities_active": false }
+        ]
+      },
+      "evidence": {
+        "receipt_types": [
+          { "type": "capture_receipt" },
+          { "type": "retrieval_receipt" }
+        ]
+      }
+    },
+    "capabilities": [{"id":"test.read","tools":["test_get"],"risk":"R0","status":"active","permissions":["read:items"]}],
+    "lifecycle": {"state_machine":[{"state":"REGISTERED"},{"state":"ACTIVE"},{"state":"REVOKED"}]},
+    "permissions": {
+      "allowed_operations": {"read:items":{"tools":["test_get"],"risk":"R0"}},
+      "forbidden_operations": ["bad"],
+      "enforcement": {"drift_monitoring":"active","violation_outcomes":{}}
+    }
+  }
+}

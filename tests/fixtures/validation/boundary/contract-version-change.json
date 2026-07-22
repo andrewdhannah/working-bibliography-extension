@@ -1,0 +1,33 @@
+{
+  "description": "Boundary — contract version 2.0.0 with valid structure",
+  "category": "boundary",
+  "expected": { "pass": true },
+  "data": {
+    "identity": {
+      "extension_id": "boundary-test",
+      "contract_id": "boundary-contract-v2",
+      "contract_version": "2.0.0",
+      "version": "1.0.0",
+      "owner_domain": "testing",
+      "declared_at": "2026-07-21T18:00:00Z"
+    },
+    "contract": {
+      "contract_id": "boundary-contract-v2",
+      "contract_type": "connector_custody",
+      "version": "2.0.0",
+      "parties": [{"role":"extension","id":"boundary-test"},{"role":"core","id":"librarian"}],
+      "capabilities": {"declarations":[{"capability_id":"test.read","allowed_operations":["test_get"]}]},
+      "ownership": {"extension_owns":{"domains":["test_data"]},"core_owns":{"domains":["authority"]}},
+      "forbidden_operations":{"absolute":[{"operation":"bad","violation_outcome":"SUSPENDED"}]},
+      "lifecycle":{"state_machine":[{"state":"REGISTERED"},{"state":"CONTRACT_VERIFIED"},{"state":"OWNER_APPROVED"},{"state":"ACTIVE"},{"state":"SUSPENDED"},{"state":"REVOKED"}]},
+      "evidence":{"receipt_types":[{"type":"op_receipt"},{"type":"drift_receipt"}]}
+    },
+    "capabilities": [{"id":"test.read","tools":["test_get"],"risk":"R0","status":"active","permissions":["read:items"]}],
+    "lifecycle": {"state_machine":[{"state":"REGISTERED"},{"state":"ACTIVE"},{"state":"REVOKED"}]},
+    "permissions": {
+      "allowed_operations": {"read:items":{"tools":["test_get"],"risk":"R0"}},
+      "forbidden_operations": ["bad"],
+      "enforcement": {"drift_monitoring":"active","violation_outcomes":{}}
+    }
+  }
+}
