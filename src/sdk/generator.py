@@ -158,6 +158,11 @@ def generate(args) -> str:
     print(f"    cp -r ../working-bibliography-extension/src/handshake/* src/handshake/")
     print(f"    python3 src/mcp/server.py")
     print()
+    print("  Documentation (requires running Librarian MCP):")
+    print(f"    librarian_documentation_generate --type extension_status \\")
+    print(f"      --extension-id {ext_id} --output-path docs/EXTENSION-STATUS.md")
+    print(f"    librarian_documentation_drift_check --file-path docs/EXTENSION-STATUS.md")
+    print()
 
     return ext_dir
 
