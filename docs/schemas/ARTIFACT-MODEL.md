@@ -9,7 +9,11 @@
 
 ## 1. Model Philosophy
 
-The artifact model follows one governing principle from ADR-WB-001:
+The artifact model follows two governing principles:
+
+**ADR-WB-001:** The canonical artifact is captured content plus provenance. The embedding is a derived index.
+
+**ADR-WB-007:** Working Bibliography maintains an independent storage domain. Librarian accesses WB artifacts only through governed extension contracts and MCP interfaces — never through direct database access.
 
 > **The canonical artifact is captured content plus provenance. The embedding is a derived index.**
 
@@ -263,7 +267,38 @@ Per ADR-WB-001, embeddings and search indexes are derived from the canonical art
 
 ---
 
-## 9. Schema Validation
+## 9. Storage Domain
+
+Per ADR-WB-007, Working Bibliography maintains its own independent storage domain:
+
+| Store | Content | Owned By |
+|---|---|---|
+| **SQLite database** | Artifact metadata, provenance, lifecycle, relationships, receipts | Working Bibliography |
+| **Text store** | Canonical artifact content (`canonical_text`), source representations | Working Bibliography |
+| **Vector index** | Embeddings, chunks, search index (derived from canonical artifacts) | Working Bibliography |
+
+### Storage Boundaries
+
+| Boundary | Rule |
+|---|---|
+| Librarian core DB | Not accessed by WB. Not extended for WB. |
+| Librarian vector store | Not shared. WB maintains its own index. |
+| Embedding model | Can be shared infrastructure (Capability Provider). |
+| Embedding vectors | Extension-owned. Stored in WB vector index. |
+
+The embedding generation model can be a shared service (a `Capability Provider` extension), but the resulting vectors belong to the extension that owns the source artifact. This enables model upgrades without custody loss: regenerate the index from canonical text, keep the same artifact identity.
+
+### Storage Invariants
+
+| Invariant | Description |
+|---|---|
+| S-001 | Artifact metadata is never stored outside WB storage domain |
+| S-002 | Canonical text is never stored outside WB storage domain |
+| S-003 | Embedding vectors are never stored outside WB vector index |
+| S-004 | Librarian accesses WB data only through MCP tools |
+| S-005 | Vector index loss does not destroy custody (regenerate from canonical_text) |
+
+## 10. Schema Validation
 
 The JSON Schema at `docs/schemas/wb-artifact.schema.json` validates artifacts at:
 

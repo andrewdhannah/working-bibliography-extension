@@ -56,12 +56,22 @@ The extension requires Librarian to be present for governance integration, but t
 │  │  (WB-ID)    │  │  (Source)    │  │ (active→)  │   │
 │  └─────────────┘  └──────────────┘  └────────────┘   │
 ├─────────────────────────────────────────────────────┤
-│                   Storage Layer                       │
+│                Storage Layer (Independent)            │
 │  ┌─────────────┐  ┌──────────────┐  ┌────────────┐   │
 │  │  Artifact   │  │  Content     │  │  Vector    │   │
 │  │  Registry   │  │  Store       │  │  Index     │   │
+│  │  (SQLite)   │  │  (Text)      │  │  (Derived) │   │
 │  └─────────────┘  └──────────────┘  └────────────┘   │
-└─────────────────────────────────────────────────────┘
+│         │                │                │            │
+│         └────────────────┼────────────────┘            │
+│                     (all WB-owned)                     │
+└───────────────────────────────────────────────────────┘
+         │
+         │ MCP (Librarian has NO direct DB access)
+         │
+         v
+    Librarian Core
+    (accesses WB artifacts only through MCP tools)
 ```
 
 ### Layer Responsibilities
@@ -229,7 +239,62 @@ The read-heavy surface is intentional: the extension's primary function is knowl
 
 ---
 
-## 7. Relationship to Add-On Contract
+## 7. Storage Architecture
+
+Per ADR-WB-007, Working Bibliography maintains an independent storage domain. No data is stored in Librarian core databases or vector stores.
+
+```
+working-bibliography-extension/storage/
+├── working_bibliography.sqlite      ← Artifact metadata, provenance, lifecycle
+├── artifacts/                        ← Canonical text content
+│   ├── wb-00001/
+│   │   ├── canonical.txt
+│   │   └── source.html
+│   └── wb-00042/
+│       ├── canonical.txt
+│       └── source.md
+└── index/                            ← Derived vector index (replaceable)
+    ├── embeddings.bin
+    └── chunks.json
+```
+
+### Two Extension Relationship Types
+
+The extension model distinguishes two patterns (per ADR-WB-007):
+
+### 1. Capability Provider
+
+Provides a computational service. Does not own knowledge custody.
+
+| Attribute | Value |
+|---|---|
+| Example | Embedding Provider, Model Runtime |
+| Owns | Model weights, inference pipeline, service state |
+| Does not own | Artifacts, vectors, custody records |
+| Contract | "I provide `generate_embedding(text)` → vector" |
+
+### 2. Knowledge Custody Provider
+
+Owns artifacts and their derived data.
+
+| Attribute | Value |
+|---|---|
+| Example | Working Bibliography, Document Archive |
+| Owns | Artifacts, sources, provenance, embeddings, lifecycle |
+| Does not own | Shared infrastructure (models, runtimes) |
+| Contract | "I provide `retrieve_context(query)` → artifact + provenance" |
+
+### Composed Example
+
+```
+User query → WB searches own vector index
+    → WB calls Embedding Provider for new content
+    → WB stores vectors in own index
+    → WB returns artifact_id + provenance + text
+    → Librarian receives governed context
+```
+
+## 9. Relationship to Add-On Contract
 
 The extension operates under the existing `ADDON-BOUNDARY-CONTRACT.md` from Librarian:
 
@@ -244,7 +309,7 @@ The extension operates under the existing `ADDON-BOUNDARY-CONTRACT.md` from Libr
 
 ---
 
-## 8. Key Invariants
+## 10. Key Invariants
 
 | ID | Invariant | Enforcement |
 |---|---|---|
@@ -255,3 +320,4 @@ The extension operates under the existing `ADDON-BOUNDARY-CONTRACT.md` from Libr
 | A-005 | Trust is granted by Owner, not self-declared. | Lifecycle state machine — OWNER_APPROVED gate |
 | A-006 | Every operation produces a receipt. | Receipt generation at every pipeline stage |
 | A-007 | Unknown does not equal untrusted. | REGISTERED state without execution rights |
+| A-008 | Extension maintains independent storage domain. Librarian accesses data only through MCP contracts. | ADR-WB-007 — no direct DB access |
