@@ -4,6 +4,31 @@
 
 This guide explains how to create an extension for the Librarian ecosystem. It is based on the Working Bibliography Extension — the first reference implementation of the Librarian extension model.
 
+## Implementation Path
+
+```
+Create → Declare → Connect → Handshake → Operate → Validate → Publish
+   ↓         ↓         ↓          ↓          ↓         ↓          ↓
+ Scaffold  Identity   MCP      6-state    Enforce    Test       Release
+ Project   Contract   Server   Lifecycle  Drift      Fixtures   Document
+           Manifest                      Revoke     Report
+```
+
+| Step | What You Do | Artifacts | Guide Section |
+|---|---|---|---|
+| **Create** | Scaffold your project directory | Project files | §13 |
+| **Declare** | Define identity, contract, capabilities | identity.json, contract.json, capabilities.json | §4-6 |
+| **Connect** | Implement MCP server with tools/list + tools/call | src/mcp/server.py | §8 |
+| **Handshake** | Implement 6-state lifecycle machine | src/handshake/ | §7 |
+| **Operate** | Enforce contract, detect drift, handle revocation | src/enforcement/, src/drift/, src/revocation/ | §9-10 |
+| **Validate** | Run compliance tests against fixtures | Validation suite | §11 |
+| **Publish** | Document, release, register with Librarian | README, docs, GitHub | §12 |
+
+> **Start with `examples/minimal-extension/`** — copy it as your project scaffold.
+> Then check each requirement in `docs/COMPLIANCE-MATRIX.md` as you implement.
+
+This guide explains how to create an extension for the Librarian ecosystem. It is based on the Working Bibliography Extension — the first reference implementation of the Librarian extension model.
+
 ---
 
 ## 1. What Is a Librarian Extension?
@@ -397,12 +422,21 @@ See [tests/fixtures/](tests/fixtures/) for example test fixtures.
 
 ---
 
-## 12. Reference Implementation
+## 12. Compliance Resources
+
+| Resource | Purpose | Location |
+|---|---|---|
+| **Specification** | Formal compliance requirements | `docs/EXTENSION-SPECIFICATION-v1.md` |
+| **Compliance Matrix** | Requirement-to-validator mapping | `docs/COMPLIANCE-MATRIX.md` |
+| **Validation Suite** | Automated compliance testing | `src/validation/` + `tests/fixtures/validation/` |
+| **Minimal Example** | Starter extension scaffold | `examples/minimal-extension/` |
+
+## 13. Reference Implementation
 
 The complete reference implementation is this repository — the Working Bibliography Extension.
 
 Use it as:
-- **Template:** Copy the structure for your own extension
+- **Starter:** Copy `examples/minimal-extension/` and build from there
 - **Example:** See how each layer is implemented
 - **Validator:** Test your extension against the same patterns
 - **Contract reference:** Compare your contract against a known-compliant one
@@ -418,10 +452,11 @@ Use it as:
 | `src/mcp/server.py` | MCP server pattern |
 | `src/enforcement/policy_engine.py` | Enforcement pipeline |
 | `src/handshake/lifecycle.py` | 6-state lifecycle machine |
+| `examples/minimal-extension/` | Reusable starter template |
 
 ---
 
-## 13. Summary: What to Implement
+## 14. Summary: What to Implement
 
 ```
 Required:

@@ -1,0 +1,10 @@
+{
+  "extension_id": "my-first-extension",
+  "display_name": "My First Extension",
+  "version": "0.1.0",
+  "contract_id": "my-extension-contract-v1",
+  "contract_version": "1.0.0",
+  "owner_domain": "my_domain",
+  "classification": "knowledge_custody_provider",
+  "declared_at": "2026-07-21T18:00:00Z"
+}

@@ -45,7 +45,9 @@ Tool Execution → Receipt Generation
 
 | Document | What It Defines |
 |---|---|
-| [EXTENSION-DEVELOPER-GUIDE.md](EXTENSION-DEVELOPER-GUIDE.md) | How to build a Librarian-compatible extension |
+| [EXTENSION-DEVELOPER-GUIDE.md](EXTENSION-DEVELOPER-GUIDE.md) | Step-by-step extension authoring guide |
+| [docs/EXTENSION-SPECIFICATION-v1.md](docs/EXTENSION-SPECIFICATION-v1.md) | Formal extension compliance specification |
+| [docs/COMPLIANCE-MATRIX.md](docs/COMPLIANCE-MATRIX.md) | Requirement-to-validator mapping |
 | [MILESTONE-ROADMAP.md](MILESTONE-ROADMAP.md) | Project milestones and progress |
 | [docs/identity/PROJECT-IDENTITY.md](docs/identity/PROJECT-IDENTITY.md) | Extension identity, purpose, non-goals |
 | [docs/contracts/WB-LIBRARIAN-CONTRACT-v1.json](docs/contracts/WB-LIBRARIAN-CONTRACT-v1.json) | Formal contract with Librarian core |
@@ -55,6 +57,7 @@ Tool Execution → Receipt Generation
 | [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) | System design and data flow |
 | [docs/architecture/EXTENSION-PORT-MODEL.md](docs/architecture/EXTENSION-PORT-MODEL.md) | Extension port model |
 | [docs/schemas/wb-artifact.schema.json](docs/schemas/wb-artifact.schema.json) | Artifact JSON Schema |
+| [examples/minimal-extension/](examples/minimal-extension/) | Reusable extension starter template |
 
 ### Key Decisions (ADRs)
 

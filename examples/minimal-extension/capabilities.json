@@ -1,0 +1,44 @@
+{
+  "manifest_version": "1.0.0",
+  "extension_id": "my-first-extension",
+  "declared_at": "2026-07-21T18:00:00Z",
+  "identity": {
+    "extension_id": "my-first-extension",
+    "display_name": "My First Extension",
+    "version": "0.1.0",
+    "classification": "knowledge_custody_provider",
+    "domain": "my_domain",
+    "contract_id": "my-extension-contract-v1",
+    "contract_version": "1.0.0",
+    "declared_at": "2026-07-21T18:00:00Z"
+  },
+  "capabilities": [
+    {
+      "id": "items.read",
+      "display_name": "Read Items",
+      "tools": ["my_get_item", "my_list_items"],
+      "risk": "R0",
+      "description": "Read items from my extension domain",
+      "permissions": ["read:items"],
+      "status": "active"
+    },
+    {
+      "id": "items.write",
+      "display_name": "Create Item",
+      "tools": ["my_create_item"],
+      "risk": "R1",
+      "description": "Create a new item in my extension domain",
+      "permissions": ["write:items"],
+      "status": "active"
+    }
+  ],
+  "forbidden_actions": [
+    { "action": "modify_librarian_authority_state", "violation_outcome": "REVOKE" },
+    { "action": "create_owner_decisions", "violation_outcome": "REVOKE" },
+    { "action": "mutate_sprint_ledger", "violation_outcome": "REVOKE" },
+    { "action": "delete_my_items", "violation_outcome": "SUSPENDED" }
+  ],
+  "receipt_types": [
+    { "type": "operation_receipt", "description": "Generated per operation" }
+  ]
+}
