@@ -153,7 +153,7 @@ def transition_to(extension_id: str, target_state: str, reason: str, authority: 
         raise LifecycleError(f"Transition to OWNER_APPROVED requires owner authority (H-003). Got '{authority}'.")
 
     if target_state in ("SUSPENDED", "REVOKED") and from_state == "ACTIVE":
-        if target_state == "SUSPENDED" and authority not in ("automated_notify_owner", "automated"):
+        if target_state == "SUSPENDED" and authority not in ("automated_notify_owner", "automated", "owner"):
             raise LifecycleError("Transition ACTIVE → SUSPENDED requires automated detection or owner action.")
         if target_state == "REVOKED" and authority != "owner":
             raise LifecycleError("Transition to REVOKED requires owner authority.")
