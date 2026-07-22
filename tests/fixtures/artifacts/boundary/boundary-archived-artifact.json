@@ -1,0 +1,23 @@
+{
+  "artifact_id": "WB-00100",
+  "spec_version": "1.0.0",
+  "content_hash": "a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4",
+  "content_hash_algorithm": "sha-256",
+  "captured_at": "2026-06-01T10:00:00Z",
+  "source": {
+    "url": "https://example.com/old-content",
+    "title": "Archived Source",
+    "retrieved_at": "2026-06-01T09:55:00Z"
+  },
+  "content": {
+    "canonical_text": "This artifact has been archived. Its content is preserved but it is excluded from search results.",
+    "raw_format": "text",
+    "word_count": 15,
+    "character_count": 100
+  },
+  "lifecycle": "archived",
+  "lifecycle_transitions": [
+    { "from_state": "active", "to_state": "active", "timestamp": "2026-06-01T10:00:00Z", "reason": "Created" },
+    { "from_state": "active", "to_state": "archived", "timestamp": "2026-07-01T12:00:00Z", "reason": "Content superseded by WB-00050" }
+  ]
+}

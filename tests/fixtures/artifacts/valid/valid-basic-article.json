@@ -1,0 +1,26 @@
+{
+  "artifact_id": "WB-00001",
+  "spec_version": "1.0.0",
+  "content_hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+  "content_hash_algorithm": "sha-256",
+  "captured_at": "2026-07-21T14:30:00Z",
+  "source": {
+    "url": "https://example.com/article",
+    "title": "Test Article",
+    "author": "Jane Doe",
+    "publisher": "Example Publications",
+    "retrieved_at": "2026-07-21T14:25:00Z",
+    "language": "en"
+  },
+  "content": {
+    "canonical_text": "This is a test article about governance patterns in AI systems. The key insight is that provenance matters more than storage.",
+    "raw_format": "html",
+    "word_count": 20,
+    "character_count": 130
+  },
+  "lifecycle": "active",
+  "metadata": {
+    "topic": "AI governance",
+    "source_type": "web_article"
+  }
+}

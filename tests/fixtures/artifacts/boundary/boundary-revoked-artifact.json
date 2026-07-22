@@ -1,0 +1,23 @@
+{
+  "artifact_id": "WB-00101",
+  "spec_version": "1.0.0",
+  "content_hash": "b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5",
+  "content_hash_algorithm": "sha-256",
+  "captured_at": "2026-05-15T08:00:00Z",
+  "source": {
+    "url": "https://example.com/retracted",
+    "title": "Retracted Source",
+    "retrieved_at": "2026-05-15T07:55:00Z"
+  },
+  "content": {
+    "canonical_text": "This artifact has been revoked. Content is preserved for audit but access is denied.",
+    "raw_format": "text",
+    "word_count": 14,
+    "character_count": 94
+  },
+  "lifecycle": "revoked",
+  "lifecycle_transitions": [
+    { "from_state": "active", "to_state": "active", "timestamp": "2026-05-15T08:00:00Z", "reason": "Created" },
+    { "from_state": "active", "to_state": "revoked", "timestamp": "2026-07-15T10:00:00Z", "reason": "Source found to contain unverified claims" }
+  ]
+}

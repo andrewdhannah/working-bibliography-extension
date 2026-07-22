@@ -1,0 +1,53 @@
+{
+  "artifact_id": "WB-99999",
+  "spec_version": "1.0.0",
+  "content_hash": "f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3",
+  "content_hash_algorithm": "sha-256",
+  "captured_at": "2026-07-21T23:59:59Z",
+  "updated_at": "2026-07-21T23:59:59Z",
+  "source": {
+    "url": "https://example.com/maximal",
+    "title": "Maximal Artifact Testing All Optional Fields",
+    "author": "Dr. Researcher",
+    "publisher": "Academic Press",
+    "retrieved_at": "2026-07-21T23:55:00Z",
+    "source_id": "doi:10.5678/example-maximal",
+    "language": "en"
+  },
+  "content": {
+    "canonical_text": "This artifact tests every optional field being populated. It exercises the complete schema definition to ensure all property paths validate correctly under maximum load conditions.",
+    "raw_format": "html",
+    "chunks": [
+      { "index": 0, "text": "This artifact tests every optional field being populated.", "token_count": 12 },
+      { "index": 1, "text": "It exercises the complete schema definition to ensure all property paths validate correctly under maximum load conditions.", "token_count": 18 }
+    ],
+    "word_count": 25,
+    "character_count": 175
+  },
+  "relationships": {
+    "derived_from": ["WB-00001", "WB-00002", "WB-00003"],
+    "supersedes": ["WB-00050"],
+    "superseded_by": [],
+    "related_to": ["WB-00042", "WB-00099"],
+    "referenced_in": ["session-001", "session-002", "session-003", "plan-sprint-v1"]
+  },
+  "lifecycle": "active",
+  "lifecycle_transitions": [
+    { "from_state": "active", "to_state": "active", "timestamp": "2026-07-21T23:59:59Z", "reason": "Created" }
+  ],
+  "metadata": {
+    "topic": "testing",
+    "priority": "high",
+    "review_status": "pending",
+    "classification": "reference"
+  },
+  "index_references": {
+    "embedding_id": "emb-wb-99999-v1",
+    "search_index_id": "idx-wb-99999-v1"
+  },
+  "receipts": {
+    "capture_receipt": "rcp-wb-99999-capture-001",
+    "retrieval_receipts": ["rcp-wb-99999-retrieve-001"],
+    "lifecycle_receipts": ["rcp-wb-99999-lifecycle-001"]
+  }
+}

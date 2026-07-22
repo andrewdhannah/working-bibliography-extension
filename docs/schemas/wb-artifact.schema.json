@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://working-bibliography-extension/schemas/wb-artifact-v1",
+  "title": "WB Artifact",
+  "description": "Canonical governed artifact for external knowledge. The artifact is captured content plus provenance. Embeddings are derived indexes, not canonical objects.",
+  "type": "object",
+  "required": [
+    "artifact_id",
+    "spec_version",
+    "content_hash",
+    "content_hash_algorithm",
+    "captured_at",
+    "source",
+    "content",
+    "lifecycle"
+  ],
+  "properties": {
+    "artifact_id": {
+      "description": "Stable unique identifier for this artifact. Pattern: WB-XXXXX.",
+      "type": "string",
+      "pattern": "^WB-[0-9]{5}$",
+      "examples": ["WB-00001", "WB-00042"]
+    },
+    "spec_version": {
+      "description": "Version of the artifact schema this object conforms to.",
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "default": "1.0.0"
+    },
+    "content_hash": {
+      "description": "Hex-encoded digest of the canonical content. Used for integrity verification.",
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "content_hash_algorithm": {
+      "description": "Hash algorithm used to produce content_hash.",
+      "type": "string",
+      "enum": ["sha-256"],
+      "default": "sha-256"
+    },
+    "captured_at": {
+      "description": "ISO 8601 timestamp when the source was captured.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "description": "ISO 8601 timestamp of last modification to this artifact record.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "description": "Provenance metadata about the original source material.",
+      "type": "object",
+      "required": ["retrieved_at"],
+      "properties": {
+        "url": {
+          "description": "Original source URL, if applicable.",
+          "type": "string",
+          "format": "uri"
+        },
+        "title": {
+          "description": "Human-readable title of the source.",
+          "type": "string",
+          "minLength": 1
+        },
+        "author": {
+          "description": "Author or creator of the source material.",
+          "type": "string"
+        },
+        "publisher": {
+          "description": "Publisher, publication, or originating context.",
+          "type": "string"
+        },
+        "retrieved_at": {
+          "description": "ISO 8601 timestamp when the source was retrieved from its origin.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_id": {
+          "description": "Optional external identifier (DOI, ISBN, archival ID, etc.).",
+          "type": "string"
+        },
+        "language": {
+          "description": "BCP 47 language tag for the source content.",
+          "type": "string",
+          "pattern": "^[a-z]{2,3}(-[A-Z][a-z]{3})?(-[A-Z]{2})?$"
+        }
+      }
+    },
+    "content": {
+      "description": "Canonical content representation. This is the authoritative text. All derived representations (embeddings, chunks, summaries) reference this content.",
+      "type": "object",
+      "required": ["canonical_text", "raw_format"],
+      "properties": {
+        "canonical_text": {
+          "description": "Extracted readable text. This is the authoritative content for integrity verification.",
+          "type": "string",
+          "minLength": 1
+        },
+        "raw_format": {
+          "description": "Original format of the source before normalization.",
+          "type": "string",
+          "enum": ["html", "pdf", "text", "chat_export", "markdown", "json", "unknown"]
+        },
+        "chunks": {
+          "description": "Optional segmented representation for retrieval. Not required for artifact validity. Chunks are derived from canonical_text, not stored independently.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "text": { "type": "string" },
+              "token_count": { "type": "integer", "minimum": 0 }
+            },
+            "required": ["index", "text"]
+          }
+        },
+        "word_count": {
+          "description": "Word count of canonical_text.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "character_count": {
+          "description": "Character count of canonical_text.",
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "relationships": {
+      "description": "Links between this artifact and other entities. Relationships are advisory — they document connections without creating graph-level consistency guarantees.",
+      "type": "object",
+      "properties": {
+        "derived_from": {
+          "description": "Artifact IDs this artifact was derived from (e.g., parent conversation, source document).",
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "supersedes": {
+          "description": "Artifact IDs that this artifact replaces or supersedes.",
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "superseded_by": {
+          "description": "Artifact IDs that have superseded this artifact.",
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "related_to": {
+          "description": "Artifact IDs related to this artifact without a specific directional relationship.",
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "referenced_in": {
+          "description": "Conversation IDs, session IDs, or work packet IDs where this artifact was referenced.",
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "lifecycle": {
+      "description": "Current lifecycle state of this artifact. Managed independently within Working Bibliography per ADR-WB-005.",
+      "type": "string",
+      "enum": ["active", "archived", "revoked"],
+      "default": "active"
+    },
+    "lifecycle_transitions": {
+      "description": "History of lifecycle state transitions for audit trail.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from_state": { "type": "string", "enum": ["active", "archived", "revoked"] },
+          "to_state": { "type": "string", "enum": ["active", "archived", "revoked"] },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "reason": { "type": "string" }
+        },
+        "required": ["from_state", "to_state", "timestamp"]
+      }
+    },
+    "metadata": {
+      "description": "Extensible key-value metadata for custom annotations.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "maxProperties": 50
+    },
+    "index_references": {
+      "description": "References to derived indexes. These are the extension's internal pointers — not canonical artifact data.",
+      "type": "object",
+      "properties": {
+        "embedding_id": {
+          "description": "Identifier for the vector embedding entry derived from this artifact.",
+          "type": "string"
+        },
+        "search_index_id": {
+          "description": "Identifier for the search index entry derived from this artifact.",
+          "type": "string"
+        }
+      }
+    },
+    "receipts": {
+      "description": "References to evidence receipts generated for this artifact.",
+      "type": "object",
+      "properties": {
+        "capture_receipt": {
+          "description": "Receipt ID for the capture event that created this artifact.",
+          "type": "string"
+        },
+        "retrieval_receipts": {
+          "description": "Receipt IDs for retrieval events that referenced this artifact.",
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "lifecycle_receipts": {
+          "description": "Receipt IDs for lifecycle transition events.",
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "description": "If chunks are present, canonical_text must have a word_count",
+      "if": {
+        "required": ["content"],
+        "properties": {
+          "content": {
+            "required": ["chunks"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "content": {
+            "required": ["word_count", "character_count"]
+          }
+        }
+      }
+    }
+  ]
+}
