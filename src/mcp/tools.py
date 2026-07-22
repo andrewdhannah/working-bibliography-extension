@@ -13,6 +13,19 @@ Initial tools (active):
 
 from . import storage, receipts, permissions
 
+# Import enforcement layer
+import sys, os
+_enforcement_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _enforcement_root not in sys.path:
+    sys.path.insert(0, _enforcement_root)
+try:
+    from enforcement.policy_engine import PolicyEngine, EnforcementDecision
+    _policy = PolicyEngine()
+    _enforcement_available = True
+except ImportError:
+    _policy = None
+    _enforcement_available = False
+
 
 def get_tool_definitions() -> list:
     """Return the MCP tool definitions for tools/list.
@@ -149,13 +162,21 @@ def call_tool(tool_name: str, arguments: dict) -> dict:
             "content": [{"type": "text", "text": f"Permission denied: {perm.get('reason', 'Unknown reason')}"}]
         }
 
-    # Forbidden operation check
-    forbidden = permissions.check_forbidden_operation(tool_name)
-    if forbidden.get("is_forbidden"):
-        return {
-            "isError": True,
-            "content": [{"type": "text", "text": f"Forbidden operation: {forbidden.get('rationale', '')}"}]
-        }
+    # Enforcement check (contract validation + boundary + drift)
+    if _enforcement_available:
+        risk = perm.get("risk", "R0")
+        enforcement = _policy.evaluate(tool_name, risk, arguments)
+        if enforcement.decision == EnforcementDecision.REJECT:
+            return {
+                "isError": True,
+                "content": [{"type": "text", "text": f"Enforcement rejected: {enforcement.reason} (receipt: {enforcement.receipt_id})"}]
+            }
+        if enforcement.decision == EnforcementDecision.SUSPEND:
+            return {
+                "isError": True,
+                "content": [{"type": "text", "text": f"Contract violation detected — extension suspended: {enforcement.reason} (receipt: {enforcement.receipt_id})"}]
+            }
+        # ALLOW — pass through to handler with enforcement evidence
 
     # Route to tool implementation
     tool_map = {

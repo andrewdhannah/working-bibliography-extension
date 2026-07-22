@@ -27,6 +27,13 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 from src.mcp import tools, permissions, receipts
 
+# Import handshake for lifecycle initialization
+try:
+    from src.handshake import orchestrator
+    _handshake_available = True
+except ImportError:
+    _handshake_available = False
+
 
 MCP_VERSION = "1.0.0"
 EXTENSION_ID = "working-bibliography-extension"
@@ -169,8 +176,47 @@ class MCPRequestHandler(BaseHTTPRequestHandler):
             super().log_message(format, *args)
 
 
-def start_server(port: int = DEFAULT_PORT):
-    """Start the MCP server."""
+def initialize_identity():
+    """Initialize extension identity to REGISTERED state.
+
+    Call this at startup to establish identity. The extension will
+    not accept tool calls until the full handshake completes (ACTIVE).
+    """
+    if not _handshake_available:
+        print("  Warning: handshake module not available — cannot initialize identity")
+        return False
+
+    announcement = {
+        "extension_id": EXTENSION_ID,
+        "display_name": "Working Bibliography Extension",
+        "version": "0.1.0",
+        "contract_id": "wb-librarian-contract-v1",
+        "contract_version": "1.0.0",
+        "owner_domain": "knowledge_custody",
+        "declared_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    }
+
+    try:
+        result = orchestrator.execute_full_handshake(announcement)
+        if result["overall_valid"]:
+            print(f"  Identity:   REGISTERED (handshake validated)")
+            return True
+        else:
+            print(f"  Identity:   handshake failed — {result.get('steps', [{}])[-1].get('error', 'unknown error')}")
+            return False
+    except Exception as e:
+        print(f"  Identity:   initialization error — {e}")
+        return False
+
+
+def start_server(port: int = DEFAULT_PORT, run_handshake: bool = False):
+    """Start the MCP server.
+
+    Args:
+        port: HTTP port for the MCP server
+        run_handshake: If True, run the full handshake + approval to reach ACTIVE.
+                       Use for testing only. Normal operation starts in REGISTERED.
+    """
     server = HTTPServer(("127.0.0.1", port), MCPRequestHandler)
     server.start_time = datetime.now(timezone.utc)
 
@@ -180,6 +226,20 @@ def start_server(port: int = DEFAULT_PORT):
     print(f"  MCP:        {MCP_VERSION}")
     print(f"  Endpoint:   http://127.0.0.1:{port}/mcp")
     print(f"  Health:     http://127.0.0.1:{port}/health")
+
+    # Initialize identity to REGISTERED
+    initialize_identity()
+
+    if run_handshake:
+        if _handshake_available:
+            approval = orchestrator.approve_and_activate(EXTENSION_ID, "auto")
+            if approval.get("success"):
+                print(f"  Handshake:  ACTIVE (auto-approved for testing)")
+            else:
+                print(f"  Handshake:  failed — {approval.get('error')}")
+        else:
+            print(f"  Handshake:  skipped — module not available")
+
     print(f"  Lifecycle:  {permissions.get_lifecycle_state()}")
     print(f"  Tools:      {len(tools.get_tool_definitions())} active")
     print()
@@ -192,5 +252,13 @@ def start_server(port: int = DEFAULT_PORT):
 
 
 if __name__ == "__main__":
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_PORT
-    start_server(port)
+    port = DEFAULT_PORT
+    auto_handshake = "--handshake" in sys.argv
+    for arg in sys.argv[1:]:
+        if arg == "--handshake":
+            continue
+        try:
+            port = int(arg)
+        except ValueError:
+            print(f"Warning: ignoring unknown argument '{arg}'")
+    start_server(port, run_handshake=auto_handshake)
