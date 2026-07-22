@@ -1,10 +1,12 @@
 # Milestone 4 — Consumer Extension Awareness: Sprint Definitions
 
 **Project:** `working-bibliography-extension`
-**Status:** Draft — each requires Owner authorization
+**Epic:** EPIC-CONSUMER-EXTENSION-AWARENESS-1
+**Status:** Epic authorized. Advancement: `owner_must_confirm_each`.
 **Sequence:** Define projection → Expose on Librarian → Build consumer harness → Compose → Package
 
 **Per ADR-WB-008:** Consumers (AI agents, CLIs, applications, services) are not governance participants. They consume capability projections but do not define capability authority.
+**Per ADR-WB-009:** Librarian is the sole authority for capability projection. Neither extensions nor consumers may define availability state independently.
 
 ---
 
@@ -50,10 +52,10 @@ Milestone 4:    "Can any consumer safely reason about          ⏳
 
 ---
 
-## Sprint: WB-CONSUMER-CAPABILITY-DISCOVERY-1 (Definition)
+## Sprint: WB-CONSUMER-CAPABILITY-DISCOVERY-1 (Definition) ✅
 
-**Authorization prompt:**
-> Authorize sprint WB-CONSUMER-CAPABILITY-DISCOVERY-1 for project working-bibliography-extension.
+**Authorization:** Owner authorization 2026-07-21
+**Status:** Complete
 
 **Objective:** Define the capability projection model, freshness rules, invalidation rules, and consumer context model. No runtime implementation — contract-first.
 
