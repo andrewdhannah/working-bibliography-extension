@@ -26,6 +26,21 @@ except ImportError:
     _policy = None
     _enforcement_available = False
 
+# Import revocation lifecycle for access control
+try:
+    from revocation.lifecycle import is_operation_allowed as check_revocation_access
+    _revocation_available = True
+except ImportError:
+    def check_revocation_access(tool, state): return True, None
+    _revocation_available = False
+
+# Import handshake lifecycle
+try:
+    from src.handshake import lifecycle as h_lifecycle
+    _handshake_available = True
+except ImportError:
+    _handshake_available = False
+
 
 def get_tool_definitions() -> list:
     """Return the MCP tool definitions for tools/list.
@@ -154,6 +169,18 @@ def call_tool(tool_name: str, arguments: dict) -> dict:
     Returns:
         dict with 'content' (list of results) or 'isError' (bool)
     """
+    # Revocation access check (SUSPENDED/REVOKED state enforcement)
+    if _revocation_available and _handshake_available:
+        state_obj = h_lifecycle.get_current_state("working-bibliography-extension")
+        if state_obj:
+            state = state_obj["state"]
+            allowed, reason = check_revocation_access(tool_name, state)
+            if not allowed:
+                return {
+                    "isError": True,
+                    "content": [{"type": "text", "text": f"Access denied: {reason}"}]
+                }
+
     # Permission check
     perm = permissions.check_tool_permission(tool_name)
     if not perm.get("allowed"):
