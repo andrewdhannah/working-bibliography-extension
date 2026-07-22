@@ -1,0 +1,27 @@
+{
+  "permissions_version": "1.0.0",
+  "extension_id": "test-extension-extension",
+  "contract_id": "test-extension-extension-contract-v1",
+  "allowed_operations": {
+    "read:items": {
+      "tools": ["item_search"],
+      "risk": "R0",
+      "requires_approval": false,
+      "produces_receipt": true
+    }{% if not loop.last %},{% endif %}
+  },
+  "forbidden_operations": [
+    "modify_librarian_authority_state",
+    "create_owner_decisions",
+    "mutate_sprint_ledger",
+    "delete_knowledge.testing_artifacts"
+  ],
+  "enforcement": {
+    "drift_monitoring": "active",
+    "review_frequency": "per_operation",
+    "violation_outcomes": {
+      "drift": "SUSPENDED",
+      "contract_breach": "REVOKED"
+    }
+  }
+}
