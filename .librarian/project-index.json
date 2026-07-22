@@ -1,0 +1,13 @@
+{
+  "$schema": "project-index-v1",
+  "project_id": "working-bibliography-extension",
+  "display_name": "Working Bibliography Extension",
+  "repo_path": "/Users/andrew/Desktop/CarbideFrame/working-bibliography-extension",
+  "startup_contract": "startup-contract.json",
+  "default_branch": "main",
+  "current_phase": "init",
+  "allowed_startup_modes": ["managed", "degraded", "read-only"],
+  "tags": ["add-on", "extension", "reference-implementation", "governed"],
+  "deprecated": false,
+  "lifecycle_policy_version": "1.1"
+}

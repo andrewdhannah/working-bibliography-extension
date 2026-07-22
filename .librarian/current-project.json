@@ -1,0 +1,10 @@
+{
+  "$schema": "current-project-v1",
+  "project_id": "working-bibliography-extension",
+  "display_name": "Working Bibliography Extension",
+  "project_root": "/Users/andrew/Desktop/CarbideFrame/working-bibliography-extension",
+  "selected_at": "2026-07-21T18:00:00Z",
+  "selected_by": "Owner authorization (Step 1)",
+  "intent": "project_start_only",
+  "intent_tokens": []
+}
