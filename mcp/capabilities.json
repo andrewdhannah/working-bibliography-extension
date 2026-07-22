@@ -1,0 +1,68 @@
+{
+  "manifest_version": "1.0.0",
+  "extension_id": "working-bibliography-extension",
+  "declared_at": "2026-07-21T18:00:00Z",
+  "identity": {
+    "extension_id": "working-bibliography-extension",
+    "display_name": "Working Bibliography Extension",
+    "version": "0.1.0",
+    "classification": "knowledge_custody_provider",
+    "domain": "knowledge_custody",
+    "contract_id": "wb-librarian-contract-v1",
+    "contract_version": "1.0.0"
+  },
+  "capabilities": [
+    {
+      "id": "artifact.read",
+      "display_name": "Read Artifact",
+      "tools": ["wb_get_artifact", "wb_list_artifacts"],
+      "risk": "R0",
+      "description": "Read artifact metadata and content by ID. List all artifacts with optional filters.",
+      "permissions": ["read:artifacts"],
+      "status": "active"
+    },
+    {
+      "id": "artifact.register",
+      "display_name": "Register Artifact",
+      "tools": ["wb_register_artifact"],
+      "risk": "R1",
+      "description": "Create a new governed artifact from captured source. Produces capture receipt.",
+      "permissions": ["write:artifacts"],
+      "status": "active"
+    },
+    {
+      "id": "knowledge.search",
+      "display_name": "Search Knowledge",
+      "tools": ["wb_search_context"],
+      "risk": "R0",
+      "description": "Search governed knowledge artifacts. Returns matching content with artifact identity and provenance.",
+      "permissions": ["read:index"],
+      "status": "pending"
+    },
+    {
+      "id": "knowledge.retrieve",
+      "display_name": "Retrieve Source",
+      "tools": ["wb_retrieve_source"],
+      "risk": "R0",
+      "description": "Retrieve original source representation for a governed artifact.",
+      "permissions": ["read:artifacts"],
+      "status": "pending"
+    },
+    {
+      "id": "provenance.read",
+      "display_name": "Read Provenance",
+      "tools": ["wb_get_receipt", "wb_get_history"],
+      "risk": "R0",
+      "description": "Read evidence receipts and operational history for governed operations.",
+      "permissions": ["read:receipts"],
+      "status": "pending"
+    }
+  ],
+  "dependencies": [
+    {
+      "type": "optional",
+      "capability": "embedding_generation",
+      "description": "If an embedding capability provider is available, WB consumes it for vector generation. If absent, WB operates in text-only mode."
+    }
+  ]
+}

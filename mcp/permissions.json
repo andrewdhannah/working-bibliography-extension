@@ -1,0 +1,51 @@
+{
+  "permissions_version": "1.0.0",
+  "extension_id": "working-bibliography-extension",
+  "contract_id": "wb-librarian-contract-v1",
+  "allowed_operations": {
+    "read:artifacts": {
+      "tools": ["wb_get_artifact", "wb_list_artifacts"],
+      "risk": "R0",
+      "requires_approval": false,
+      "produces_receipt": true
+    },
+    "write:artifacts": {
+      "tools": ["wb_register_artifact"],
+      "risk": "R1",
+      "requires_approval": false,
+      "produces_receipt": true
+    },
+    "read:index": {
+      "tools": ["wb_search_context"],
+      "risk": "R0",
+      "requires_approval": false,
+      "produces_receipt": true,
+      "status": "pending"
+    },
+    "read:receipts": {
+      "tools": ["wb_get_receipt", "wb_get_history"],
+      "risk": "R0",
+      "requires_approval": false,
+      "produces_receipt": false,
+      "status": "pending"
+    }
+  },
+  "forbidden_operations": [
+    "modify_librarian_authority_state",
+    "create_owner_decisions",
+    "mutate_sprint_ledger",
+    "accept_mutation_allowance",
+    "seal_production_receipts",
+    "delete_artifact_content",
+    "modify_artifact_provenance"
+  ],
+  "enforcement": {
+    "drift_monitoring": "active",
+    "review_frequency": "per_operation",
+    "violation_outcomes": {
+      "drift": "SUSPENDED",
+      "contract_breach": "REVOKED",
+      "forbidden_operation_attempt": "REVOKED"
+    }
+  }
+}
