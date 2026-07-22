@@ -9,7 +9,8 @@
     "classification": "knowledge_custody_provider",
     "domain": "knowledge_custody",
     "contract_id": "wb-librarian-contract-v1",
-    "contract_version": "1.0.0"
+    "contract_version": "1.0.0",
+    "declared_at": "2026-07-21T18:00:00Z"
   },
   "capabilities": [
     {
@@ -57,6 +58,22 @@
       "permissions": ["read:receipts"],
       "status": "pending"
     }
+  ],
+  "forbidden_actions": [
+    { "action": "modify_librarian_authority_state", "rationale": "Extension must not write governance state", "violation_outcome": "REVOKE" },
+    { "action": "create_owner_decisions", "rationale": "Extension must not originate authority actions", "violation_outcome": "REVOKE" },
+    { "action": "mutate_sprint_ledger", "rationale": "Sprint ledger is core-controlled record", "violation_outcome": "REVOKE" },
+    { "action": "accept_mutation_allowance", "rationale": "Extension operates in addon-owned space", "violation_outcome": "REVOKE" },
+    { "action": "seal_production_receipts", "rationale": "Sealing is authority act", "violation_outcome": "REVOKE" },
+    { "action": "delete_artifact_content", "rationale": "Content must persist for audit", "violation_outcome": "SUSPENDED" },
+    { "action": "modify_artifact_provenance", "rationale": "Provenance is immutable after capture", "violation_outcome": "SUSPENDED" }
+  ],
+  "receipt_types": [
+    { "type": "capture_receipt", "description": "Generated when a new artifact is captured", "key_fields": ["artifact_id", "content_hash", "source"] },
+    { "type": "retrieval_receipt", "description": "Generated on knowledge retrieval", "key_fields": ["query", "artifact_references"] },
+    { "type": "lifecycle_receipt", "description": "Generated on artifact lifecycle transition", "key_fields": ["artifact_id", "from_state", "to_state"] },
+    { "type": "drift_receipt", "description": "Generated on drift detection", "key_fields": ["expected", "observed", "classification"] },
+    { "type": "embedding_receipt", "description": "Generated on embedding creation", "key_fields": ["artifact_id", "model", "source_hash"] }
   ],
   "dependencies": [
     {

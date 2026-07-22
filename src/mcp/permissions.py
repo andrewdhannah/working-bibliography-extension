@@ -4,23 +4,32 @@ Permission enforcement for Working Bibliography MCP tools.
 Validates every tool call against:
 1. The capability manifest (is this tool declared?)
 2. The permissions config (is this operation allowed?)
-3. The lifecycle state (is the extension active?)
+3. The lifecycle state (is the extension active?) — uses handshake module
 4. The forbidden operations list (is this a forbidden action?)
+
+The lifecycle state is managed by the handshake module (src/handshake/lifecycle.py).
+Before the handshake completes, the extension is in REGISTERED or CONTRACT_VERIFIED
+state and capabilities are unavailable.
 """
 
 import json
 import os
-from datetime import datetime, timezone
+import sys
 
+# Ensure project root is on path for handshake import
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__))))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
-MCP_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
-    os.path.abspath(__file__)))), "mcp")
+MCP_DIR = os.path.join(PROJECT_ROOT, "mcp")
 
-
-# Runtime lifecycle state (simulated — real implementation would use
-# the Librarian extension port layer)
-_lifecycle_state = "ACTIVE"
-_lifecycle_initialized_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+# Import handshake lifecycle if available
+try:
+    from src.handshake import lifecycle as handshake_lifecycle
+    _handshake_available = True
+except ImportError:
+    _handshake_available = False
 
 
 def _load_json(filename: str) -> dict:
@@ -43,18 +52,22 @@ def get_permissions() -> dict:
 
 
 def get_lifecycle_state() -> str:
-    """Get the current extension lifecycle state."""
-    return _lifecycle_state
+    """Get the current extension lifecycle state from the handshake module."""
+    if _handshake_available:
+        state = handshake_lifecycle.get_current_state("working-bibliography-extension")
+        if state:
+            return state["state"]
+    return "REGISTERED"
 
 
-def set_lifecycle_state(state: str) -> str:
-    """Set the lifecycle state (for testing and handshake simulation)."""
-    global _lifecycle_state, _lifecycle_initialized_at
-    allowed_states = ["REGISTERED", "CONTRACT_VERIFIED", "OWNER_APPROVED", "ACTIVE", "SUSPENDED", "REVOKED"]
-    if state not in allowed_states:
-        raise ValueError(f"Invalid lifecycle state: {state}. Must be one of {allowed_states}")
-    _lifecycle_state = state
-    return _lifecycle_state
+def can_execute() -> bool:
+    """Check if the extension can execute capabilities.
+
+    Delegates to the handshake lifecycle module for persistent state.
+    """
+    if _handshake_available:
+        return handshake_lifecycle.can_execute("working-bibliography-extension")
+    return False
 
 
 def check_tool_permission(tool_name: str) -> dict:
@@ -73,10 +86,10 @@ def check_tool_permission(tool_name: str) -> dict:
     state = get_lifecycle_state()
 
     # 1. Check lifecycle state — only ACTIVE allows execution
-    if state != "ACTIVE":
+    if not can_execute():
         return {
             "allowed": False,
-            "reason": f"Extension is in {state} state. Capabilities require ACTIVE state.",
+            "reason": f"Extension is in {state} state. Capabilities require ACTIVE state (handshake must complete first).",
             "capability_id": None,
             "risk": None,
             "produces_receipt": False
