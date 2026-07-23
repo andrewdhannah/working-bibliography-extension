@@ -1,0 +1,14 @@
+{
+  "receipt_id": "rcp-wb-capture-20260722061252-37dd28697535",
+  "receipt_type": "capture_receipt",
+  "artifact_id": "WB-00003",
+  "content_hash": "7ced6053bf351d431e0f0b689329ccefc2834d0d41024ec7f532e952e83097c2",
+  "source": {
+    "title": "SQLite Documentation \u2014 Architecture and Design",
+    "author": "SQLite Consortium",
+    "retrieved_at": "2026-07-22T06:30:00Z",
+    "url": "https://www.sqlite.org/docs.html"
+  },
+  "captured_at": "2026-07-22T06:12:52Z",
+  "schema_version": "1.0.0"
+}

@@ -1,0 +1,13 @@
+{
+  "receipt_id": "rcp-wb-contract_verification-20260722053157-64e5ede68f7f",
+  "receipt_type": "contract_verification_receipt",
+  "contract_id": "wb-librarian-contract-v1",
+  "contract_version": "1.0.0",
+  "valid": true,
+  "checks_passed": 11,
+  "checks_total": 11,
+  "errors": [],
+  "warnings": [],
+  "verified_at": "2026-07-22T05:31:57Z",
+  "schema_version": "1.0.0"
+}

@@ -1,0 +1,21 @@
+{
+  "artifact_id": "WB-00005",
+  "spec_version": "1.0.0",
+  "content_hash": "36c3ba6ea1e5649f3b1fef2ee6e26ae11a56186226b79c78b6da5d3be9c4394f",
+  "content_hash_algorithm": "sha-256",
+  "captured_at": "2026-07-22T06:12:59Z",
+  "source": {
+    "title": "Test Source",
+    "author": "Test Author",
+    "retrieved_at": "2026-07-22T06:30:00Z"
+  },
+  "content": {
+    "canonical_text": "Test content for debugging artifact registration.",
+    "raw_format": "markdown"
+  },
+  "relationships": {},
+  "lifecycle": "active",
+  "metadata": {
+    "test": true
+  }
+}

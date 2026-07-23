@@ -1,0 +1,9 @@
+# RELEASE-BUILD-REPRODUCIBILITY-1 — Python Dependencies
+#
+# WB Extension: Standard library only — no third-party packages required.
+# All imports (json, os, sys, hashlib, re, argparse, glob, shutil,
+# collections, dataclasses, datetime, enum, http.server) are stdlib.
+#
+# The following packages are required by the Librarian validator scripts
+# (active/librarian/scripts/validate-*.py):
+jsonschema>=4.0

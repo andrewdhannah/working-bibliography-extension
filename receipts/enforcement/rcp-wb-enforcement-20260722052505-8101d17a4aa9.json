@@ -1,0 +1,11 @@
+{
+  "receipt_id": "rcp-wb-enforcement-20260722052505-8101d17a4aa9",
+  "receipt_type": "enforcement_receipt",
+  "tool_name": "wb_get_artifact",
+  "decision": "ALLOW",
+  "reason": "Contract compliant",
+  "check_count": 5,
+  "checks_passed": 5,
+  "enforced_at": "2026-07-22T05:25:05Z",
+  "schema_version": "1.0.0"
+}

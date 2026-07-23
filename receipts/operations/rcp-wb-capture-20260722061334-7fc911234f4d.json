@@ -1,0 +1,14 @@
+{
+  "receipt_id": "rcp-wb-capture-20260722061334-7fc911234f4d",
+  "receipt_type": "capture_receipt",
+  "artifact_id": "WB-00006",
+  "content_hash": "a9f4e282659fbb074516a2a41439a991c7ef8754aeac1d1ffced1aca9c967738",
+  "source": {
+    "title": "MCP Specification - Model Context Protocol",
+    "author": "Anthropic",
+    "retrieved_at": "2026-07-22T06:30:00Z",
+    "url": "https://modelcontextprotocol.io/"
+  },
+  "captured_at": "2026-07-22T06:13:34Z",
+  "schema_version": "1.0.0"
+}

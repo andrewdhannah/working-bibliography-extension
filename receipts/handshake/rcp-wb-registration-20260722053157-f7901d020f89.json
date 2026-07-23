@@ -1,0 +1,11 @@
+{
+  "receipt_id": "rcp-wb-registration-20260722053157-f7901d020f89",
+  "receipt_type": "registration_receipt",
+  "extension_id": "working-bibliography-extension",
+  "version": "0.1.0",
+  "contract_id": "wb-librarian-contract-v1",
+  "contract_version": "1.0.0",
+  "state": "REGISTERED",
+  "registered_at": "2026-07-22T05:31:57Z",
+  "schema_version": "1.0.0"
+}

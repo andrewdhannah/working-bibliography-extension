@@ -1,0 +1,20 @@
+{
+  "extension_id": "working-bibliography-extension",
+  "version": "0.1.0",
+  "contract_id": "wb-librarian-contract-v1",
+  "contract_version": "1.0.0",
+  "owner_domain": "knowledge_custody",
+  "display_name": "Working Bibliography Extension",
+  "state": "REGISTERED",
+  "registered_at": "2026-07-22T05:31:57Z",
+  "declared_at": "2026-07-22T05:31:57Z",
+  "last_transition": null,
+  "transitions": [
+    {
+      "from_state": null,
+      "to_state": "REGISTERED",
+      "timestamp": "2026-07-22T05:31:57Z",
+      "reason": "Identity announcement validated"
+    }
+  ]
+}

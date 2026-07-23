@@ -1,0 +1,87 @@
+{
+  "extension_id": "working-bibliography-extension",
+  "state": "ACTIVE",
+  "entered_at": "2026-07-22T06:13:34Z",
+  "previous_state": "SUSPENDED",
+  "transition_reason": "Owner restoration after operational proof",
+  "transition_count": 11,
+  "history": [
+    {
+      "from_state": "REGISTERED",
+      "to_state": "CONTRACT_VERIFIED",
+      "timestamp": "2026-07-22T05:31:57Z",
+      "reason": "Contract and capability manifest validated",
+      "authority": "automated"
+    },
+    {
+      "from_state": "CONTRACT_VERIFIED",
+      "to_state": "OWNER_APPROVED",
+      "timestamp": "2026-07-22T05:32:23Z",
+      "reason": "Owner authorization by owner",
+      "authority": "owner"
+    },
+    {
+      "from_state": "OWNER_APPROVED",
+      "to_state": "ACTIVE",
+      "timestamp": "2026-07-22T05:32:23Z",
+      "reason": "Owner approval granted, activating capabilities",
+      "authority": "automated"
+    },
+    {
+      "from_state": "ACTIVE",
+      "to_state": "SUSPENDED",
+      "timestamp": "2026-07-22T05:32:23Z",
+      "reason": "Drift detected: risk escalation (R0\u2192R1) and permission expansion (write:librarian_state)",
+      "authority": "automated_notify_owner"
+    },
+    {
+      "from_state": "SUSPENDED",
+      "to_state": "ACTIVE",
+      "timestamp": "2026-07-22T05:32:23Z",
+      "reason": "Owner reviewed drift evidence and cleared suspension",
+      "authority": "owner"
+    },
+    {
+      "from_state": "ACTIVE",
+      "to_state": "SUSPENDED",
+      "timestamp": "2026-07-22T06:02:17Z",
+      "reason": "Drift detected in Librarian-projected integration test",
+      "authority": "automated_notify_owner"
+    },
+    {
+      "from_state": "SUSPENDED",
+      "to_state": "ACTIVE",
+      "timestamp": "2026-07-22T06:02:17Z",
+      "reason": "Owner restoration after drift review",
+      "authority": "owner"
+    },
+    {
+      "from_state": "ACTIVE",
+      "to_state": "SUSPENDED",
+      "timestamp": "2026-07-22T06:12:52Z",
+      "reason": "Operational proof: suspension test",
+      "authority": "automated_notify_owner"
+    },
+    {
+      "from_state": "SUSPENDED",
+      "to_state": "ACTIVE",
+      "timestamp": "2026-07-22T06:12:52Z",
+      "reason": "Owner restoration after suspension test",
+      "authority": "owner"
+    },
+    {
+      "from_state": "ACTIVE",
+      "to_state": "SUSPENDED",
+      "timestamp": "2026-07-22T06:13:34Z",
+      "reason": "Operational proof: suspension test",
+      "authority": "automated_notify_owner"
+    },
+    {
+      "from_state": "SUSPENDED",
+      "to_state": "ACTIVE",
+      "timestamp": "2026-07-22T06:13:34Z",
+      "reason": "Owner restoration after operational proof",
+      "authority": "owner"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "detected_at": "2026-07-22T06:13:34Z",
+  "operation": "wb_list_artifacts",
+  "result": {
+    "classification": "PASS",
+    "checks_passed": 0,
+    "checks_total": 3,
+    "details": [
+      {
+        "surface": "capability_manifest_declared",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "capability_contract_declared",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "forbidden_drift",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      }
+    ]
+  }
+}

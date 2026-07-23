@@ -1,0 +1,14 @@
+{
+  "receipt_id": "rcp-wb-capture-20260722052500-c10243a256a9",
+  "receipt_type": "capture_receipt",
+  "artifact_id": "WB-00001",
+  "content_hash": "bb51ee013bc7c97f8f109b07cb601d1ff1b36149d8561b253e6a935597804f02",
+  "source": {
+    "title": "Governance Boundary Test",
+    "author": "Andrew Hannah",
+    "retrieved_at": "2026-07-22T05:25:00Z",
+    "url": "https://carbideframe.local/test/governance-boundary"
+  },
+  "captured_at": "2026-07-22T05:25:00Z",
+  "schema_version": "1.0.0"
+}

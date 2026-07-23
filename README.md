@@ -1,8 +1,30 @@
 # Librarian Extension Reference Implementation
 
-**First reference implementation of the Librarian extension governance model.** This repository proves that external capabilities can attach to the Librarian governance kernel through contracts, handshakes, lifecycle management, and continuous compliance — without becoming part of Librarian core.
+**Reference implementation of the Librarian capability governance model.** This repository proves that independently developed capabilities can participate in a governed AI ecosystem through contracts, handshakes, lifecycle management, continuous compliance, and capability projection — without becoming part of Librarian core or a new trust boundary.
 
-Originally built as the Working Bibliography Extension (a governed knowledge custody provider), this repository evolved into the **canonical reference architecture** for the entire Librarian extension ecosystem. It contains the specification, implementation, validation suite, consumer awareness model, and extension SDK.
+The bibliography workload (source ingestion, artifact custody, knowledge retrieval) is the demonstration vehicle. The governed capability path — from external knowledge through ingestion, projection, consumer reasoning, drift detection, suspension, and recovery — is the product concept.
+
+The complete end-to-end chain:
+
+```
+External Sources
+    ↓
+Governed Ingestion
+    ↓
+Canonical Artifact + Provenance (SHA-256 hash, source URL, capture timestamp)
+    ↓
+Capability Projection  ← Librarian governance kernel decides availability
+    ↓
+Consumer Context       ← agent sees only available capabilities
+    ↓
+Agent Reasoning        ← answers grounded in governed sources, not model memory
+    ↓
+Evidence-backed Output
+    ↓
+Lifecycle Governance  ← drift detection, suspension, Owner recovery
+```
+
+Sealed in sprints [#542–#545](https://github.com/andrewdhannah/librarian) with 20/20 operational proof checks and 22/22 live consumer proof checks. The full custody loop — ingestion, retrieval, suspension, consumer refusal, Owner restoration — is demonstrated end-to-end.
 
 ---
 
@@ -14,7 +36,7 @@ Contract               → docs/contracts/WB-LIBRARIAN-CONTRACT-v1.json
 Lifecycle              → src/handshake/ (6-state state machine)
 Execution              → src/mcp/ (MCP server, 3 active tools)
 Enforcement            → src/enforcement/ (3-stage pipeline)
-Drift Detection        → src/drift/ (7-domain comparison)
+Drift Detection        → src/enforcement/drift_detector.py (baseline comparison)
 Revocation             → src/revocation/ (SUSPENDED/REVOKED/ACTIVE)
 Validation             → src/validation/ (5 domains, 14 fixtures)
 Capability Projection  → src/projection/ (consumer-agnostic MCP tool)
@@ -31,12 +53,23 @@ Platform Epic          → EPIC-INTEGRATION-PLAN.md
 
 ## Architecture
 
+Three running services represent the three architectural roles:
+
+| Service | Port | Role |
+|---|---|---|
+| **Librarian MCP** (Swift) | 3456 | Governance kernel — capability projection, extension registry, lifecycle authority |
+| **WB MCP Server** (Python) | 8765 | Capability provider — artifact storage, search, retrieval |
+| **Projection Reference** (Python) | 8766 | Cross-language conformance oracle |
+
+The separation of concerns:
+
 ```
                   Any Consumer (AI agent, CLI, app, service)
                        |
-                       |  capability_projection()
+                       |  librarian_capability_projection()
+                       |  (consumer queries Librarian, not the extension directly)
                        v
-            Librarian Governance Kernel
+            Librarian Governance Kernel (:3456)
                        |
         +--------------+--------------+
         |              |              |
@@ -50,6 +83,7 @@ Platform Epic          → EPIC-INTEGRATION-PLAN.md
     +----------+------------+----------+
     | Working  |  Runtime   |  Future  |
     |  Bib     |   Node     |   Ext    |
+    | (:8765)  |            |          |
     +----------+------------+----------+
 ```
 
@@ -60,10 +94,11 @@ Platform Epic          → EPIC-INTEGRATION-PLAN.md
 | No capability without a contract | Handshake validation |
 | No trust without lifecycle progression | 6-state state machine |
 | No execution without authorization | Permission + enforcement checks |
-| No silent drift | 7-domain drift detection |
-| No automatic restoration after violation | Owner-only suspension/revocation |
+| No silent drift | Baseline comparison (risk, permissions, tools, forbidden actions) |
+| No automatic restoration after violation | Owner-only SUSPENDED/REVOKED transitions (centralized AUTHORITY_POLICY) |
 | No consumer-side capability invention | Consumer context harness |
 | No direct provider-to-consumer authority | Capability projection (ADR-WB-009) |
+| **Capability Absence Invariant**: a consumer must not execute, infer availability of, or rely upon a capability absent from the current projection | Projection-level governance: suspension removes capability from consumer context, agent refuses unavailable tools |
 
 ---
 
@@ -73,12 +108,14 @@ Platform Epic          → EPIC-INTEGRATION-PLAN.md
 |---|---|
 | An extension can be independently developed and governed | Full reference implementation with 9 ADRs |
 | The contract is the integration point, not the code | Contract defined before implementation |
-| Trust is established through lifecycle, not assumed | 6-state machine with explicit approval gate |
+| Trust is established through lifecycle, not assumed | 6-state machine with explicit Owner approval gate |
 | Unavailable is a valid state | SUSPENDED/REVOKED: no capabilities, evidence preserved |
 | Consumers safely discover capabilities | Consumer harness: 46 tests, no tool invention |
 | Multiple extensions compose without leakage | Composition: 50 tests, namespace isolation |
 | New extensions generated without platform knowledge | SDK produces contract-compliant scaffold |
 | Governance kernel survives extension removal | Revocation: core unaffected, receipts preserved |
+| **Agent knows only what Librarian projects** | Live consumer proof: WB suspended, projection refreshed, zero WB tool calls issued, Owner restoration required |
+| **Knowledge grounded in governed sources** | Operational proof: 3 sources ingested, SHA-256 hashed, provenance preserved, answers reference specific artifacts |
 
 ---
 
@@ -211,11 +248,31 @@ python3 src/composition/tests.py
 ## Relationship to Librarian
 
 ```
-github.com/andrewdhannah/librarian                   <- Governance kernel
-github.com/andrewdhannah/working-bibliography-extension  <- This repo
+github.com/andrewdhannah/librarian                           <- Governance kernel (port 3456)
+github.com/andrewdhannah/working-bibliography-extension      <- This repo (port 8765)
 ```
 
-This repository is the **reference architecture and specification** for the Librarian extension model. Librarian core validates extensions against the contract defined here. The remaining integration -- wiring `librarian_capability_projection()` into Librarian's MCP surface -- is documented in `EPIC-INTEGRATION-PLAN.md`.
+This repository is the **reference architecture and specification** for the Librarian extension model. The capability projection integration (`librarian_capability_projection`, `librarian_extension_register`, `librarian_extension_transition`, `librarian_extension_set_capabilities`, `librarian_extension_list`) is wired into Librarian's MCP surface and sealed in sprint #543.
+
+The standalone WB MCP server (`src/mcp/server.py`) is preserved as a reference provider implementation and SDK test target. The Librarian integration adds a governance path — it does not replace the extension contract.
+
+### Running the Live Proof
+
+```bash
+# 1. Start Librarian MCP (port 3456) — governance kernel
+cd active/librarian
+swift run LibrarianServer serve --env dev --hostname 127.0.0.1 --port 3456
+
+# 2. Start WB MCP server (port 8765) — capability provider
+cd working-bibliography-extension
+python3 src/mcp/server.py
+
+# 3. Register WB in Librarian projection and activate it
+#    (via librarian_extension_register / librarian_extension_transition MCP tools)
+
+# 4. Ingest sources and query
+python3 -m src.projection.adapter  # projection reference (port 8766)
+```
 
 ---
 
@@ -223,4 +280,4 @@ This repository is the **reference architecture and specification** for the Libr
 
 Reference implementation of the Librarian extension governance model.
 
-Extensions are not granted access. They establish a contract, declare capabilities, pass validation, and operate within defined ownership boundaries.
+Extensions are not granted access. They establish a contract, declare capabilities, pass validation, and operate within defined ownership boundaries. The extension does not decide when it is available. Consumers do not query extensions directly to determine trust. The governance kernel projects the current capability state.

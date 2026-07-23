@@ -16,6 +16,7 @@ and receipts.
 
 from . import identity, validator, lifecycle as lifecycle_module
 from . import receipts as handshake_receipts
+from ..enforcement.drift_detector import DriftDetector
 
 # The expected identity for this extension
 EXPECTED_IDENTITY = {
@@ -192,6 +193,14 @@ def approve_and_activate(extension_id: str, approved_by: str = "owner") -> dict:
         return result
 
     activation_receipt = handshake_receipts.generate_activation_receipt(extension_id)
+
+    # Capture approved baseline — snapshot of what was true when trusted.
+    try:
+        baseline = DriftDetector.capture_baseline(extension_id)
+        result["baseline_captured"] = baseline is not None
+    except Exception as e:
+        result["baseline_captured"] = False
+        result["baseline_error"] = str(e)
 
     result["success"] = True
     result["state"] = "ACTIVE"

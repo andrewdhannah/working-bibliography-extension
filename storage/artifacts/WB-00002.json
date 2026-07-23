@@ -1,0 +1,29 @@
+{
+  "artifact_id": "WB-00002",
+  "spec_version": "1.0.0",
+  "content_hash": "de0a8200cc9532aeaaadc5b36e977e9755671e6f0fba1f373903de4192c15b21",
+  "content_hash_algorithm": "sha-256",
+  "captured_at": "2026-07-22T06:12:52Z",
+  "source": {
+    "title": "MCP Specification \u2014 Model Context Protocol",
+    "author": "Anthropic",
+    "retrieved_at": "2026-07-22T06:30:00Z",
+    "url": "https://modelcontextprotocol.io/"
+  },
+  "content": {
+    "canonical_text": "The Model Context Protocol (MCP) is an open protocol that enables AI applications to securely access tools and data from external sources. MCP uses a client-server architecture where AI applications (clients) connect to servers that provide resources, tools, and prompts. Capability discovery in MCP works through a negotiation mechanism: during initialization, the client sends its capabilities and the server responds with its supported capabilities. Tools are discovered via tools/list and called via tools/call. Resources use a URI-based addressing scheme with resource templates for parameterized access. Prompts are pre-written templates that guide AI behavior. MCP supports transports including stdio (for local processes) and SSE (for remote servers). The protocol is designed to be transport-agnostic and supports streaming responses for long-running operations.",
+    "raw_format": "markdown"
+  },
+  "relationships": {},
+  "lifecycle": "active",
+  "metadata": {
+    "source_type": "technical_specification",
+    "domain": "protocol",
+    "tags": [
+      "mcp",
+      "protocol",
+      "capability-discovery",
+      "client-server"
+    ]
+  }
+}

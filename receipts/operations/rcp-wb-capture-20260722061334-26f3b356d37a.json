@@ -1,0 +1,14 @@
+{
+  "receipt_id": "rcp-wb-capture-20260722061334-26f3b356d37a",
+  "receipt_type": "capture_receipt",
+  "artifact_id": "WB-00008",
+  "content_hash": "0d5207132b094908a88642411125d1379c0cfd70b8569d460ead2377943c42c9",
+  "source": {
+    "title": "Capability Negotiation in Agent-Protocol Architectures",
+    "author": "Andrew Hannah",
+    "retrieved_at": "2026-07-22T06:30:00Z",
+    "url": "https://carbideframe.local/research/agent-protocol-capability-negotiation"
+  },
+  "captured_at": "2026-07-22T06:13:34Z",
+  "schema_version": "1.0.0"
+}

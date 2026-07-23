@@ -1,0 +1,9 @@
+{
+  "receipt_id": "rcp-wb-approval-20260722053223-b6632dd54112",
+  "receipt_type": "approval_receipt",
+  "extension_id": "working-bibliography-extension",
+  "approved_by": "owner",
+  "state": "OWNER_APPROVED",
+  "approved_at": "2026-07-22T05:32:23Z",
+  "schema_version": "1.0.0"
+}

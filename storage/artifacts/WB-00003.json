@@ -1,0 +1,29 @@
+{
+  "artifact_id": "WB-00003",
+  "spec_version": "1.0.0",
+  "content_hash": "7ced6053bf351d431e0f0b689329ccefc2834d0d41024ec7f532e952e83097c2",
+  "content_hash_algorithm": "sha-256",
+  "captured_at": "2026-07-22T06:12:52Z",
+  "source": {
+    "title": "SQLite Documentation \u2014 Architecture and Design",
+    "author": "SQLite Consortium",
+    "retrieved_at": "2026-07-22T06:30:00Z",
+    "url": "https://www.sqlite.org/docs.html"
+  },
+  "content": {
+    "canonical_text": "SQLite is a C-language library that implements a small, fast, self-contained, high-reliability, full-featured SQL database engine. SQLite is the most used database engine in the world. It is built into all mobile phones and most computers. SQLite reads and writes directly to ordinary disk files. A complete SQL database with multiple tables, indices, triggers, and views, is contained in a single disk file. The SQLite architecture consists of seven layers: the interface, the tokenizer, the parser, the code generator, the virtual machine, the B-tree, and the pager. Transactions are atomic, consistent, isolated, and durable (ACID) even if interrupted by system crashes. SQLite uses a dynamic typing system where the type is associated with the value rather than the column. It supports UTF-8 and UTF-16 encoding, user-defined functions, and full-text search via FTS5 extension.",
+    "raw_format": "markdown"
+  },
+  "relationships": {},
+  "lifecycle": "active",
+  "metadata": {
+    "source_type": "technical_documentation",
+    "domain": "database",
+    "tags": [
+      "sqlite",
+      "database",
+      "architecture",
+      "embedded"
+    ]
+  }
+}

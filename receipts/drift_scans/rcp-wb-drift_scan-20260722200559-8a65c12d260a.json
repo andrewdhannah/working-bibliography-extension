@@ -1,0 +1,12 @@
+{
+  "receipt_id": "rcp-wb-drift_scan-20260722200559-8a65c12d260a",
+  "receipt_type": "drift_scan_receipt",
+  "extension_id": "test-ext",
+  "baseline_hash": "c8ad4b9581465960545fbf893a5c9f9a769ee0245c14a461f5ab6744e1d6169e",
+  "classification": "REVOKE",
+  "domain_count": 7,
+  "finding_count": 1,
+  "lifecycle_state": "ACTIVE",
+  "scanned_at": "2026-07-22T20:05:59Z",
+  "schema_version": "1.0.0"
+}

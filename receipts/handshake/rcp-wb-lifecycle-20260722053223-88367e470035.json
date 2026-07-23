@@ -1,0 +1,11 @@
+{
+  "receipt_id": "rcp-wb-lifecycle-20260722053223-88367e470035",
+  "receipt_type": "lifecycle_transition_receipt",
+  "extension_id": "working-bibliography-extension",
+  "from_state": "SUSPENDED",
+  "to_state": "ACTIVE",
+  "reason": "Owner reviewed and cleared drift \u2014 restoration authorized",
+  "authority": "owner",
+  "transitioned_at": "2026-07-22T05:32:23Z",
+  "schema_version": "1.0.0"
+}

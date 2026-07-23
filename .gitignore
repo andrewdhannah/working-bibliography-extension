@@ -29,3 +29,5 @@ build/
 
 # Receipts are committed — empty dir placeholder only
 receipts/*.tmp
+provider/target/
+provider/target/

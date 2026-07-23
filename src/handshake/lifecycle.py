@@ -57,6 +57,19 @@ TRANSITIONS = {
     }
 }
 
+# Authority policy: (from_state, to_state) → set of allowed authority values.
+# Every transition passes through this centralized policy table.
+# Extension cannot self-elevate (H-004, H-008).
+AUTHORITY_POLICY = {
+    ("REGISTERED", "CONTRACT_VERIFIED"): {"automated"},
+    ("CONTRACT_VERIFIED", "OWNER_APPROVED"): {"owner"},
+    ("OWNER_APPROVED", "ACTIVE"): {"automated"},
+    ("ACTIVE", "SUSPENDED"): {"automated", "automated_notify_owner"},
+    ("ACTIVE", "REVOKED"): {"owner"},
+    ("SUSPENDED", "ACTIVE"): {"owner"},
+    ("SUSPENDED", "REVOKED"): {"owner"},
+}
+
 VALID_STATES = list(TRANSITIONS.keys())
 TERMINAL_STATES = ["REVOKED"]
 
@@ -148,15 +161,16 @@ def transition_to(extension_id: str, target_state: str, reason: str, authority: 
             f"Guard: {TRANSITIONS[from_state]['guard']}"
         )
 
-    # Authority checks
-    if target_state == "OWNER_APPROVED" and authority != "owner":
-        raise LifecycleError(f"Transition to OWNER_APPROVED requires owner authority (H-003). Got '{authority}'.")
-
-    if target_state in ("SUSPENDED", "REVOKED") and from_state == "ACTIVE":
-        if target_state == "SUSPENDED" and authority not in ("automated_notify_owner", "automated", "owner"):
-            raise LifecycleError("Transition ACTIVE → SUSPENDED requires automated detection or owner action.")
-        if target_state == "REVOKED" and authority != "owner":
-            raise LifecycleError("Transition to REVOKED requires owner authority.")
+    # Centralized authority check via policy table.
+    # H-004: Extension cannot self-approve or self-elevate.
+    # H-008: No implicit trust — privilege-increasing transitions require owner.
+    required_authorities = AUTHORITY_POLICY.get((from_state, target_state), set())
+    if required_authorities and authority not in required_authorities:
+        raise LifecycleError(
+            f"Transition '{from_state}' → '{target_state}' requires authority in "
+            f"{required_authorities}, got '{authority}'. "
+            f"Policy: privilege-increasing transitions require owner (H-004, H-008)."
+        )
 
     # Execute transition
     current["previous_state"] = from_state

@@ -1,0 +1,23 @@
+{
+  "artifact_id": "WB-00001",
+  "spec_version": "1.0.0",
+  "content_hash": "bb51ee013bc7c97f8f109b07cb601d1ff1b36149d8561b253e6a935597804f02",
+  "content_hash_algorithm": "sha-256",
+  "captured_at": "2026-07-22T05:25:00Z",
+  "source": {
+    "title": "Governance Boundary Test",
+    "author": "Andrew Hannah",
+    "retrieved_at": "2026-07-22T05:25:00Z",
+    "url": "https://carbideframe.local/test/governance-boundary"
+  },
+  "content": {
+    "canonical_text": "This is a test artifact created to verify the governance boundary between capability declaration and capability availability. The extension was in CONTRACT_VERIFIED state when this tool was listed, but only became executable after Owner approval advanced the lifecycle to ACTIVE.",
+    "raw_format": "markdown"
+  },
+  "relationships": {},
+  "lifecycle": "active",
+  "metadata": {
+    "test_purpose": "governance_boundary_verification",
+    "test_phase": "activation"
+  }
+}

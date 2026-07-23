@@ -24,6 +24,7 @@ class ExtensionState(str, Enum):
     ACTIVE = "active"
     SUSPENDED = "suspended"
     REVOKED = "revoked"
+    UNKNOWN = "unknown"
 
 
 class CapabilityAvailability(str, Enum):

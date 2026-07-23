@@ -1,0 +1,28 @@
+{
+  "artifact_id": "WB-00008",
+  "spec_version": "1.0.0",
+  "content_hash": "0d5207132b094908a88642411125d1379c0cfd70b8569d460ead2377943c42c9",
+  "content_hash_algorithm": "sha-256",
+  "captured_at": "2026-07-22T06:13:34Z",
+  "source": {
+    "title": "Capability Negotiation in Agent-Protocol Architectures",
+    "author": "Andrew Hannah",
+    "retrieved_at": "2026-07-22T06:30:00Z",
+    "url": "https://carbideframe.local/research/agent-protocol-capability-negotiation"
+  },
+  "content": {
+    "canonical_text": "Capability negotiation in agent protocols follows a layered model. At the transport layer, the client and server establish connectivity. At the discovery layer, the client learns what operations the server supports. At the authorization layer, the governance kernel determines whether the discovered capabilities are currently available. Traditional API protocols (REST, GraphQL) conflate discovery with availability: if the endpoint responds, the operation is available. Agent protocols require an additional governance boundary because the consumer is an autonomous agent. The governance kernel projects a subset of declared capabilities based on lifecycle state, trust posture, and drift monitoring. Drift is detected by comparing current behavior against a baseline captured at approval time.",
+    "raw_format": "markdown"
+  },
+  "relationships": {},
+  "lifecycle": "active",
+  "metadata": {
+    "source_type": "research_paper",
+    "domain": "agent-protocols",
+    "tags": [
+      "capability-negotiation",
+      "governance",
+      "extension-model"
+    ]
+  }
+}

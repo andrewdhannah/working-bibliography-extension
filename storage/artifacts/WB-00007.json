@@ -1,0 +1,28 @@
+{
+  "artifact_id": "WB-00007",
+  "spec_version": "1.0.0",
+  "content_hash": "30d488a93bb99fefb958f85cedb9f515a7164fcec0aa5bb9cb2dfcd1b23cf4e3",
+  "content_hash_algorithm": "sha-256",
+  "captured_at": "2026-07-22T06:13:34Z",
+  "source": {
+    "title": "SQLite Documentation - Architecture and Design",
+    "author": "SQLite Consortium",
+    "retrieved_at": "2026-07-22T06:30:00Z",
+    "url": "https://www.sqlite.org/docs.html"
+  },
+  "content": {
+    "canonical_text": "SQLite is a C-language library that implements a small, fast, self-contained, high-reliability, full-featured SQL database engine. SQLite is the most used database engine in the world. The SQLite architecture consists of seven layers: the interface, the tokenizer, the parser, the code generator, the virtual machine, the B-tree, and the pager. Transactions are atomic, consistent, isolated, and durable (ACID) even if interrupted by system crashes. SQLite uses a dynamic typing system where the type is associated with the value rather than the column.",
+    "raw_format": "markdown"
+  },
+  "relationships": {},
+  "lifecycle": "active",
+  "metadata": {
+    "source_type": "technical_documentation",
+    "domain": "database",
+    "tags": [
+      "sqlite",
+      "database",
+      "architecture"
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "receipt_id": "rcp-wb-lifecycle-20260722053223-f71fc9330b2d",
+  "receipt_type": "lifecycle_transition_receipt",
+  "extension_id": "working-bibliography-extension",
+  "from_state": "ACTIVE",
+  "to_state": "SUSPENDED",
+  "reason": "Drift detected: risk escalation and permission expansion",
+  "authority": "automated_notify_owner",
+  "transitioned_at": "2026-07-22T05:32:23Z",
+  "schema_version": "1.0.0"
+}

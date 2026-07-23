@@ -1,0 +1,13 @@
+{
+  "receipt_id": "rcp-wb-capture-20260722061259-9a4dc12f4c89",
+  "receipt_type": "capture_receipt",
+  "artifact_id": "WB-00005",
+  "content_hash": "36c3ba6ea1e5649f3b1fef2ee6e26ae11a56186226b79c78b6da5d3be9c4394f",
+  "source": {
+    "title": "Test Source",
+    "author": "Test Author",
+    "retrieved_at": "2026-07-22T06:30:00Z"
+  },
+  "captured_at": "2026-07-22T06:12:59Z",
+  "schema_version": "1.0.0"
+}

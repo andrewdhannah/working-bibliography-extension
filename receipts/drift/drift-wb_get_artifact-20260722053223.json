@@ -1,0 +1,144 @@
+{
+  "detected_at": "2026-07-22T05:32:23Z",
+  "operation": "wb_get_artifact",
+  "result": {
+    "classification": "REVOKE",
+    "checks_passed": 0,
+    "checks_total": 19,
+    "details": [
+      {
+        "surface": "capability_manifest_declared",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "capability_contract_declared",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "forbidden_drift",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "risk_escalation_artifact.read",
+        "expected": "risk=R0",
+        "observed": "risk=R1",
+        "classification": "REVOKE",
+        "detail": "Capability 'artifact.read' risk increased from 'R0' to 'R1' beyond approved contract."
+      },
+      {
+        "surface": "permission_expansion_artifact.read",
+        "expected": "permissions=['read:artifacts']",
+        "observed": "permissions=['read:artifacts', 'write:librarian_state']",
+        "classification": "REVOKE",
+        "detail": "Capability 'artifact.read' permission scope expanded: +['write:librarian_state']"
+      },
+      {
+        "surface": "tools_stable_artifact.read",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "risk_stable_artifact.register",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "permissions_stable_artifact.register",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "tools_stable_artifact.register",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "risk_stable_knowledge.search",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "permissions_stable_knowledge.search",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "tools_stable_knowledge.search",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "risk_stable_knowledge.retrieve",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "permissions_stable_knowledge.retrieve",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "tools_stable_knowledge.retrieve",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "risk_stable_provenance.read",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "permissions_stable_provenance.read",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "tools_stable_provenance.read",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      },
+      {
+        "surface": "forbidden_actions_intact",
+        "expected": "contract",
+        "observed": "observed",
+        "classification": "PASS",
+        "detail": null
+      }
+    ]
+  }
+}
