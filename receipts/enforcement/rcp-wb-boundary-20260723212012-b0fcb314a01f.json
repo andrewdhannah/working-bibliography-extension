@@ -1,0 +1,9 @@
+{
+  "receipt_id": "rcp-wb-boundary-20260723212012-b0fcb314a01f",
+  "receipt_type": "boundary_violation_receipt",
+  "tool_name": "wb_get_artifact",
+  "violation_type": "invalid_artifact_domain",
+  "detail": "Artifact ID 'test-001' does not use WB-owned namespace 'WB-*'",
+  "violated_at": "2026-07-23T21:20:12Z",
+  "schema_version": "1.0.0"
+}

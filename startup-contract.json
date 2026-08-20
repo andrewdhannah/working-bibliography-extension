@@ -1,6 +1,8 @@
 {
   "$schema": "startup-contract-v1",
+  "contract_schema": "startup-contract-v1",
   "project_id": "working-bibliography-extension",
+  "project_name": "Working Bibliography Extension",
   "display_name": "Working Bibliography Extension",
   "startup_mode": "managed",
   "startup_sequence": [
